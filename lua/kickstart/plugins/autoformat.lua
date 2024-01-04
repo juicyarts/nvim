@@ -46,6 +46,8 @@ return {
 
         -- Tsserver usually works poorly. Sorry you work with bad languages
         -- You can remove this line if you know what you're doing :)
+
+        -- commenting out in favor of https://github.com/pmizio/typescript-tools.nvim ?
         --if client.name == 'tsserver' then
         --  return
         --end
