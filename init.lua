@@ -246,18 +246,15 @@ require('lazy').setup({                        -- NOTE: First, some plugins that
       vim.cmd.colorscheme 'dracula'
     end
   }, {
-    -- typescript nehancement ?
-    "pmizio/typescript-tools.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-    opts = {}
-  }, {
-    -- lsp signature addition ?
-    "ray-x/lsp_signature.nvim",
-    event = "VeryLazy",
-    opts = {},
-    config = function(_, opts)
-      require 'lsp_signature'.setup(opts)
-    end
+    "kdheepak/lazygit.nvim",
+    -- optional for floating window border decoration
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      "nvim-lua/plenary.nvim",
+    },
+    config = function()
+      require("telescope").load_extension("lazygit")
+    end,
   }, {
     -- games
     'ThePrimeagen/vim-be-good',
@@ -266,7 +263,6 @@ require('lazy').setup({                        -- NOTE: First, some plugins that
   }, {
     -- fast switch buffer
     'ThePrimeagen/harpoon',
-    opts = {},
   },
     {
       -- git without git
@@ -394,7 +390,8 @@ vim.keymap.set("n", "<C-j>", "<cmd>mcprev<CR>zz")
 vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
-vim.keymap.set('n', '<leader><F5>', vim.cmd.UndotreeToggle, {desc="Undo Tree"})
+vim.keymap.set('n', '<leader><F5>', vim.cmd.UndotreeToggle, { desc = "Undo Tree" })
+vim.keymap.set('n', '<leader>lg', ":LazyGit<CR>", { desc = "[l]azy [G]it", silent = true })
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
