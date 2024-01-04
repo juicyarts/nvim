@@ -277,7 +277,9 @@ require('lazy').setup({                        -- NOTE: First, some plugins that
     -- git without git
     'mbbill/undotree',
   }, {
-    'wuelnerdotexe/vim-astro' 
+    'wuelnerdotexe/vim-astro'
+  }, {
+    'github/copilot.vim'
   },
   {
     import = 'custom.plugins'
@@ -311,6 +313,7 @@ vim.o.clipboard = 'unnamedplus'
 
 -- Enable break indent
 vim.o.breakindent = true
+vim.opt.cmdheight = 0
 
 -- Save undo history
 -- [[UndoTree]]
