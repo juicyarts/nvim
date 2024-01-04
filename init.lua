@@ -376,7 +376,7 @@ vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, {
   desc = "[f]ormat"
 })
 
-vim.keymap.set("n", "<leader>b", ":Neotree reveal<cr>", {
+vim.keymap.set("n", "<leader>b", ":Neotree toggle<cr>", {
   desc = "Open Side[b]ar"
 })
 
