@@ -10,8 +10,8 @@ vim.g.maplocalleader = ' '
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
   vim.fn
-      .system { 'git', 'clone', '--filter=blob:none', 'https://github.com/folke/lazy.nvim.git', '--branch=stable', -- latest stable release
-        lazypath }
+  .system { 'git', 'clone', '--filter=blob:none', 'https://github.com/folke/lazy.nvim.git', '--branch=stable', -- latest stable release
+    lazypath }
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -26,25 +26,25 @@ vim.opt.rtp:prepend(lazypath)
 --  You can also configure plugins after the setup call,
 --    as they will be available in your neovim runtime.
 require('lazy').setup({                        -- NOTE: First, some plugins that don't require any configuration
-    -- Git related plugins
-    'tpope/vim-fugitive', 'tpope/vim-rhubarb', -- Detect tabstop and shiftwidth automatically
-    'tpope/vim-sleuth',                        -- NOTE: This is where your plugins related to LSP can be installed.
-    --  The configuration is done below. Search for lspconfig to find it below.
-    {
-      -- LSP Configuration & Plugins
-      'neovim/nvim-lspconfig',
-      dependencies = { -- Automatically install LSPs to stdpath for neovim
-        {
-          'williamboman/mason.nvim',
-          config = true
-        }, 'williamboman/mason-lspconfig.nvim', -- Useful status updates for LSP
-        -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-        {
-          'j-hui/fidget.nvim',
-          opts = {}
-        }, -- Additional lua configuration, makes nvim stuff amazing!
-        'folke/neodev.nvim' }
-    }, {
+  -- Git related plugins
+  'tpope/vim-fugitive', 'tpope/vim-rhubarb', -- Detect tabstop and shiftwidth automatically
+  'tpope/vim-sleuth',                        -- NOTE: This is where your plugins related to LSP can be installed.
+  --  The configuration is done below. Search for lspconfig to find it below.
+  {
+    -- LSP Configuration & Plugins
+    'neovim/nvim-lspconfig',
+    dependencies = { -- Automatically install LSPs to stdpath for neovim
+      {
+        'williamboman/mason.nvim',
+        config = true
+      }, 'williamboman/mason-lspconfig.nvim', -- Useful status updates for LSP
+      -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
+      {
+        'j-hui/fidget.nvim',
+        opts = {}
+      }, -- Additional lua configuration, makes nvim stuff amazing!
+      'folke/neodev.nvim' }
+  }, {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
     dependencies = {                                  -- Snippet Engine & its associated nvim-cmp source
@@ -52,21 +52,21 @@ require('lazy').setup({                        -- NOTE: First, some plugins that
       'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-path',     -- Adds a number of user-friendly snippets
       'rafamadriz/friendly-snippets' }
   },                                                  -- Useful plugin to show you pending keybinds.
-    {
-      'folke/which-key.nvim',
-      opts = {}
-    }, -- pretty diagnostics https://github.com/folke/trouble.nvim
-    {
-      'folke/trouble.nvim',
-      dependencies = {
-        "nvim-tree/nvim-web-devicons",
-      },
-      config = function()
-        require("trouble").setup {
-          icons = false,
-        }
-      end
-    }, {
+  {
+    'folke/which-key.nvim',
+    opts = {}
+  }, -- pretty diagnostics https://github.com/folke/trouble.nvim
+  {
+    'folke/trouble.nvim',
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
+    config = function()
+      require("trouble").setup {
+        icons = false,
+      }
+    end
+  }, {
     "folke/zen-mode.nvim",
     opts = {
       -- your configuration comes here
@@ -114,9 +114,9 @@ require('lazy').setup({                        -- NOTE: First, some plugins that
           end)
           return '<Ignore>'
         end, {
-          expr = true,
-          desc = 'Jump to next hunk'
-        })
+            expr = true,
+            desc = 'Jump to next hunk'
+          })
 
         map({ 'n', 'v' }, '[c', function()
           if vim.wo.diff then
@@ -127,22 +127,22 @@ require('lazy').setup({                        -- NOTE: First, some plugins that
           end)
           return '<Ignore>'
         end, {
-          expr = true,
-          desc = 'Jump to previous hunk'
-        })
+            expr = true,
+            desc = 'Jump to previous hunk'
+          })
 
         -- Actions
         -- visual mode
         map('v', '<leader>hs', function()
           gs.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
         end, {
-          desc = 'stage git hunk'
-        })
+            desc = 'stage git hunk'
+          })
         map('v', '<leader>hr', function()
           gs.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
         end, {
-          desc = 'reset git hunk'
-        })
+            desc = 'reset git hunk'
+          })
         -- normal mode
         map('n', '<leader>hs', gs.stage_hunk, {
           desc = 'git stage hunk'
@@ -167,16 +167,16 @@ require('lazy').setup({                        -- NOTE: First, some plugins that
             full = false
           }
         end, {
-          desc = 'git blame line'
-        })
+            desc = 'git blame line'
+          })
         map('n', '<leader>hd', gs.diffthis, {
           desc = 'git diff against index'
         })
         map('n', '<leader>hD', function()
           gs.diffthis '~'
         end, {
-          desc = 'git diff against last commit'
-        })
+            desc = 'git diff against last commit'
+          })
 
         -- Toggles
         map('n', '<leader>tb', gs.toggle_current_line_blame, {
@@ -212,26 +212,34 @@ require('lazy').setup({                        -- NOTE: First, some plugins that
     main = 'ibl',
     opts = {}
   }, -- "gc" to comment visual regions/lines
-    {
-      'numToStr/Comment.nvim',
-      opts = {}
-    }, -- Fuzzy Finder (files, lsp, etc)
-    {
-      'nvim-telescope/telescope.nvim',
-      branch = '0.1.x',
-      dependencies = { 'nvim-lua/plenary.nvim', -- Fuzzy Finder Algorithm which requires local dependencies to be built.
-        -- Only load if `make` is available. Make sure you have the system
-        -- requirements installed.
-        {
-          'nvim-telescope/telescope-fzf-native.nvim',
-          -- NOTE: If you are having trouble with this installation,
-          --       refer to the README for telescope-fzf-native for more instructions.
-          build = 'make',
-          cond = function()
-            return vim.fn.executable 'make' == 1
-          end
-        } }
-    }, {
+  {
+    'numToStr/Comment.nvim',
+    opts = {}
+  }, -- Fuzzy Finder (files, lsp, etc)
+  {
+    'nvim-telescope/telescope.nvim',
+    branch = '0.1.x',
+    dependencies = { 'nvim-lua/plenary.nvim', -- Fuzzy Finder Algorithm which requires local dependencies to be built.
+      -- Only load if `make` is available. Make sure you have the system
+      -- requirements installed.
+      {
+        "nvim-telescope/telescope-live-grep-args.nvim",
+        version = "^1.0.0",
+      },
+      {
+        'nvim-telescope/telescope-fzf-native.nvim',
+        -- NOTE: If you are having trouble with this installation,
+        --       refer to the README for telescope-fzf-native for more instructions.
+        build = 'make',
+        cond = function()
+          return vim.fn.executable 'make' == 1
+        end
+      }
+    },
+    config = function()
+      require("telescope").load_extension("live_grep_args")
+    end
+  }, {
     -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     dependencies = { 'nvim-treesitter/nvim-treesitter-textobjects' },
@@ -264,13 +272,15 @@ require('lazy').setup({                        -- NOTE: First, some plugins that
     -- fast switch buffer
     'ThePrimeagen/harpoon',
   },
-    {
-      -- git without git
-      'mbbill/undotree',
-    },
-    {
-      import = 'custom.plugins'
-    } },
+  {
+    -- git without git
+    'mbbill/undotree',
+  }, {
+    'wuelnerdotexe/vim-astro' 
+  },
+  {
+    import = 'custom.plugins'
+  } },
   {})
 
 -- [[ Setting options ]]
@@ -358,7 +368,7 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, {
   desc = 'Go to next diagnostic message'
 })
 -- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, {
+vim.keymap.set('n', '<leader>q', ":TroubleToggle<cr>", {
   desc = 'Open diagnostics list'
 })
 
@@ -472,8 +482,8 @@ vim.keymap.set('n', '<leader>/', function()
     previewer = false
   })
 end, {
-  desc = '[/] Fuzzily search in current buffer'
-})
+    desc = '[/] Fuzzily search in current buffer'
+  })
 
 local function telescope_live_grep_open_files()
   require('telescope.builtin').live_grep {
@@ -481,9 +491,15 @@ local function telescope_live_grep_open_files()
     prompt_title = 'Live Grep in Open Files'
   }
 end
+
 vim.keymap.set('n', '<leader>s/', telescope_live_grep_open_files, {
   desc = '[S]earch [/] in Open Files'
 })
+
+
+vim.keymap.set("n", "<leader>fg", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
+
+
 vim.keymap.set('n', '<leader>ss', require('telescope.builtin').builtin, {
   desc = '[S]earch [S]elect Telescope'
 })
@@ -502,9 +518,9 @@ vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, {
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, {
   desc = '[S]earch by [G]rep'
 })
-vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', {
-  desc = '[S]earch by [G]rep on Git Root'
-})
+--vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', {
+--  desc = '[S]earch by [G]rep on Git Root'
+--})
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, {
   desc = '[S]earch [D]iagnostics'
 })
@@ -632,8 +648,8 @@ local on_attach = function(_, bufnr)
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
     vim.lsp.buf.format()
   end, {
-    desc = 'Format current buffer with LSP'
-  })
+      desc = 'Format current buffer with LSP'
+    })
 end
 
 -- document existing key chains
@@ -679,8 +695,8 @@ require('which-key').register({
   },
   ['<leader>h'] = { 'Git [H]unk' }
 }, {
-  mode = 'v'
-})
+    mode = 'v'
+  })
 
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
@@ -788,17 +804,17 @@ cmp.setup {
   sources = { {
     name = 'nvim_lsp'
   }, {
-    name = 'luasnip'
-  }, {
-    name = 'path'
-  } }
+      name = 'luasnip'
+    }, {
+      name = 'path'
+    } }
 }
 
 
 -- [[NeoTree Setup]]
 
 require("neo-tree").setup({
-  close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
+  close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
   popup_border_style = "rounded",
   enable_git_status = true,
   enable_diagnostics = true,
@@ -953,7 +969,7 @@ require("neo-tree").setup({
   nesting_rules = {},
   filesystem = {
     filtered_items = {
-      visible = false, -- when true, they will just be displayed differently than normal items
+      visible = true, -- when true, they will just be displayed differently than normal items
       hide_dotfiles = true,
       hide_gitignored = true,
       hide_hidden = true, -- only works on Windows for hidden files/directories
@@ -968,7 +984,7 @@ require("neo-tree").setup({
         --".gitignored",
       },
       never_show = { -- remains hidden even if visible is toggled to true, this overrides always_show
-        --".DS_Store",
+        ".DS_Store",
         --"thumbs.db"
       },
       never_show_by_pattern = { -- uses glob style patterns
@@ -1069,6 +1085,24 @@ require("neo-tree").setup({
 
 -- [[Harpoon]]
 require("telescope").load_extension('harpoon')
+
+-- [[Diagnostics Styling]]
+
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+  vim.lsp.handlers.signature_help, {
+    border = "single"
+  }
+)
+
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+  vim.lsp.handlers.hover, {
+    border = "single"
+  }
+)
+
+--vim.diagnostic.config{
+--  float={border = "single"}
+--}
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
