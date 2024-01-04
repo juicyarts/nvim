@@ -340,7 +340,6 @@ vim.o.scrolloff = 10
 vim.o.hlsearch = false
 vim.o.incsearch = true
 vim.opt.updatetime = 50
-vim.opt.colorcolumn = "100"
 
 -- [[ Basic Keymaps ]]
 
