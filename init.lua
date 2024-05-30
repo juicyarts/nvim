@@ -30,6 +30,7 @@ require('lazy').setup({ -- NOTE: First, some plugins that don't require any conf
   'tpope/vim-commentary',
   'tpope/vim-fugitive', 'tpope/vim-rhubarb', -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',                        -- NOTE: This is where your plugins related to LSP can be installed.
+  'joerdav/templ.vim',
   --  The configuration is done below. Search for lspconfig to find it below.
   {
     -- LSP Configuration & Plugins
@@ -272,6 +273,9 @@ require('lazy').setup({ -- NOTE: First, some plugins that don't require any conf
 }, {
   -- fast switch buffer
   'ThePrimeagen/harpoon',
+  config = function()
+    require('harpoon').setup()
+  end
 }, {
   -- git without git
   'mbbill/undotree',
@@ -279,6 +283,13 @@ require('lazy').setup({ -- NOTE: First, some plugins that don't require any conf
   'wuelnerdotexe/vim-astro'
 }, {
   import = 'custom.plugins'
+}, {
+  'zbirenbaum/copilot.lua',
+  cmd = "Copilot",
+  event = "InsertEnter",
+  config = function()
+    require("copilot").setup({})
+  end,
 }, {
   "ray-x/go.nvim",
   dependencies = { -- optional packages
@@ -292,7 +303,7 @@ require('lazy').setup({ -- NOTE: First, some plugins that don't require any conf
   event = { "CmdlineEnter" },
   ft = { "go", 'gomod' },
   build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
-}})
+} })
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -729,7 +740,7 @@ local servers = {
   -- rust_analyzer = {},
   -- tsserver = {},
   -- html = { filetypes = { 'html', 'twig', 'hbs'} },
-
+  templ = {},
   lua_ls = {
     Lua = {
       workspace = {
@@ -744,7 +755,7 @@ local servers = {
   }
 }
 
--- vim.filetype.add({ extension = { templ = "templ" } })
+vim.filetype.add({ extension = { templ = "templ" } })
 
 -- Setup neovim lua configuration
 require('neodev').setup()
@@ -768,6 +779,18 @@ mason_lspconfig.setup_handlers { function(server_name)
     filetypes = (servers[server_name] or {}).filetypes
   }
 end }
+
+require('lspconfig').html.setup({
+    on_attach = on_attach,
+    capabilities = capabilities,
+    filetypes = { "html", "templ" },
+})
+
+require('lspconfig').htmx.setup({
+    on_attach = on_attach,
+    capabilities = capabilities,
+    filetypes = { "html", "templ" },
+})
 
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
