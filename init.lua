@@ -16,8 +16,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- disable netrw for nvim-tree
---vim.g.loaded_netrw = 1
---vim.g.loaded_netrwPlugin = 1
 
 -- [[ Configure plugins ]]
 -- NOTE: Here is where you install your plugins.
@@ -25,13 +23,11 @@ vim.opt.rtp:prepend(lazypath)
 --
 --  You can also configure plugins after the setup call,
 --    as they will be available in your neovim runtime.
-require('lazy').setup({ -- NOTE: First, some plugins that don't require any configuration
-  -- Git related plugins
-  'tpope/vim-commentary',
-  'tpope/vim-fugitive', 'tpope/vim-rhubarb', -- Detect tabstop and shiftwidth automatically
-  'tpope/vim-sleuth',                        -- NOTE: This is where your plugins related to LSP can be installed.
+require('lazy').setup({
+  'tpope/vim-sleuth',
+  'tpope/vim-fugitive',
+  'tpope/vim-rhubarb',
   'joerdav/templ.vim',
-  --  The configuration is done below. Search for lspconfig to find it below.
   {
     -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
@@ -39,25 +35,31 @@ require('lazy').setup({ -- NOTE: First, some plugins that don't require any conf
       {
         'williamboman/mason.nvim',
         config = true
-      }, 'williamboman/mason-lspconfig.nvim', -- Useful status updates for LSP
+      },
+      'williamboman/mason-lspconfig.nvim', -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       {
         'j-hui/fidget.nvim',
         opts = {}
       }, -- Additional lua configuration, makes nvim stuff amazing!
-      'folke/neodev.nvim' }
-  }, {
-  -- Autocompletion
-  'hrsh7th/nvim-cmp',
-  dependencies = {                                  -- Snippet Engine & its associated nvim-cmp source
-    'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip', -- Adds LSP completion capabilities
-    'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-path',     -- Adds a number of user-friendly snippets
-    'rafamadriz/friendly-snippets' }
-},                                                  -- Useful plugin to show you pending keybinds.
+      'folke/neodev.nvim'
+    }
+  },
+  {
+    -- Autocompletion
+    'hrsh7th/nvim-cmp',
+    dependencies = {
+      'L3MON4D3/LuaSnip',
+      'saadparwaiz1/cmp_luasnip',
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-path',
+      'rafamadriz/friendly-snippets'
+    }
+  },
   {
     'folke/which-key.nvim',
     opts = {}
-  }, -- pretty diagnostics https://github.com/folke/trouble.nvim
+  },
   {
     'folke/trouble.nvim',
     dependencies = {
@@ -68,162 +70,155 @@ require('lazy').setup({ -- NOTE: First, some plugins that don't require any conf
         icons = false,
       }
     end
-  }, {
-  "folke/zen-mode.nvim",
-  opts = {
-    -- your configuration comes here
-    -- or leave it empty to use the default settings
-    -- refer to the configuration section below
-  }
-}, {
-  -- Adds git related signs to the gutter, as well as utilities for managing changes
-  'lewis6991/gitsigns.nvim',
-  opts = {
-    -- See `:help gitsigns.txt`
-    signs = {
-      add = {
-        text = '+'
-      },
-      change = {
-        text = '~'
-      },
-      delete = {
-        text = '_'
-      },
-      topdelete = {
-        text = '‾'
-      },
-      changedelete = {
-        text = '~'
-      }
-    },
-    on_attach = function(bufnr)
-      local gs = package.loaded.gitsigns
-
-      local function map(mode, l, r, opts)
-        opts = opts or {}
-        opts.buffer = bufnr
-        vim.keymap.set(mode, l, r, opts)
-      end
-
-      -- Navigation
-      map({ 'n', 'v' }, ']c', function()
-        if vim.wo.diff then
-          return ']c'
-        end
-        vim.schedule(function()
-          gs.next_hunk()
-        end)
-        return '<Ignore>'
-      end, {
-        expr = true,
-        desc = 'Jump to next hunk'
-      })
-
-      map({ 'n', 'v' }, '[c', function()
-        if vim.wo.diff then
-          return '[c'
-        end
-        vim.schedule(function()
-          gs.prev_hunk()
-        end)
-        return '<Ignore>'
-      end, {
-        expr = true,
-        desc = 'Jump to previous hunk'
-      })
-
-      -- Actions
-      -- visual mode
-      map('v', '<leader>hs', function()
-        gs.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
-      end, {
-        desc = 'stage git hunk'
-      })
-      map('v', '<leader>hr', function()
-        gs.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
-      end, {
-        desc = 'reset git hunk'
-      })
-      -- normal mode
-      map('n', '<leader>hs', gs.stage_hunk, {
-        desc = 'git stage hunk'
-      })
-      map('n', '<leader>hr', gs.reset_hunk, {
-        desc = 'git reset hunk'
-      })
-      map('n', '<leader>hS', gs.stage_buffer, {
-        desc = 'git Stage buffer'
-      })
-      map('n', '<leader>hu', gs.undo_stage_hunk, {
-        desc = 'undo stage hunk'
-      })
-      map('n', '<leader>hR', gs.reset_buffer, {
-        desc = 'git Reset buffer'
-      })
-      map('n', '<leader>hp', gs.preview_hunk, {
-        desc = 'preview git hunk'
-      })
-      map('n', '<leader>hb', function()
-        gs.blame_line {
-          full = false
+  },
+  {
+    'lewis6991/gitsigns.nvim',
+    opts = {
+      -- See `:help gitsigns.txt`
+      signs = {
+        add = {
+          text = '+'
+        },
+        change = {
+          text = '~'
+        },
+        delete = {
+          text = '_'
+        },
+        topdelete = {
+          text = '‾'
+        },
+        changedelete = {
+          text = '~'
         }
-      end, {
-        desc = 'git blame line'
-      })
-      map('n', '<leader>hd', gs.diffthis, {
-        desc = 'git diff against index'
-      })
-      map('n', '<leader>hD', function()
-        gs.diffthis '~'
-      end, {
-        desc = 'git diff against last commit'
-      })
+      },
+      on_attach = function(bufnr)
+        local gs = package.loaded.gitsigns
 
-      -- Toggles
-      map('n', '<leader>tb', gs.toggle_current_line_blame, {
-        desc = 'toggle git blame line'
-      })
-      map('n', '<leader>td', gs.toggle_deleted, {
-        desc = 'toggle git show deleted'
-      })
+        local function map(mode, l, r, opts)
+          opts = opts or {}
+          opts.buffer = bufnr
+          vim.keymap.set(mode, l, r, opts)
+        end
 
-      -- Text object
-      map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>', {
-        desc = 'select git hunk'
-      })
-    end
-  }
-}, {
-  -- Set lualine as statusline
-  'nvim-lualine/lualine.nvim',
-  -- See `:help lualine.txt`
-  opts = {
-    options = {
-      icons_enabled = false,
-      theme = 'dracula-nvim',
-      component_separators = '|',
-      section_separators = ''
+        -- Navigation
+        map({ 'n', 'v' }, ']c', function()
+          if vim.wo.diff then
+            return ']c'
+          end
+          vim.schedule(function()
+            gs.next_hunk()
+          end)
+          return '<Ignore>'
+        end, {
+          expr = true,
+          desc = 'Jump to next hunk'
+        })
+
+        map({ 'n', 'v' }, '[c', function()
+          if vim.wo.diff then
+            return '[c'
+          end
+          vim.schedule(function()
+            gs.prev_hunk()
+          end)
+          return '<Ignore>'
+        end, {
+          expr = true,
+          desc = 'Jump to previous hunk'
+        })
+
+        -- Actions
+        -- visual mode
+        map('v', '<leader>hs', function()
+          gs.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
+        end, {
+          desc = 'stage git hunk'
+        })
+        map('v', '<leader>hr', function()
+          gs.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
+        end, {
+          desc = 'reset git hunk'
+        })
+        -- normal mode
+        map('n', '<leader>hs', gs.stage_hunk, {
+          desc = 'git stage hunk'
+        })
+        map('n', '<leader>hr', gs.reset_hunk, {
+          desc = 'git reset hunk'
+        })
+        map('n', '<leader>hS', gs.stage_buffer, {
+          desc = 'git Stage buffer'
+        })
+        map('n', '<leader>hu', gs.undo_stage_hunk, {
+          desc = 'undo stage hunk'
+        })
+        map('n', '<leader>hR', gs.reset_buffer, {
+          desc = 'git Reset buffer'
+        })
+        map('n', '<leader>hp', gs.preview_hunk, {
+          desc = 'preview git hunk'
+        })
+        map('n', '<leader>hb', function()
+          gs.blame_line {
+            full = false
+          }
+        end, {
+          desc = 'git blame line'
+        })
+        map('n', '<leader>hd', gs.diffthis, {
+          desc = 'git diff against index'
+        })
+        map('n', '<leader>hD', function()
+          gs.diffthis '~'
+        end, {
+          desc = 'git diff against last commit'
+        })
+
+        -- Toggles
+        map('n', '<leader>tb', gs.toggle_current_line_blame, {
+          desc = 'toggle git blame line'
+        })
+        map('n', '<leader>td', gs.toggle_deleted, {
+          desc = 'toggle git show deleted'
+        })
+
+        -- Text object
+        map({ 'o', 'x' }, 'ih', ':<C-U>Gitsigns select_hunk<CR>', {
+          desc = 'select git hunk'
+        })
+      end
     }
-  }
-}, {
-  -- Add indentation guides even on blank lines
-  'lukas-reineke/indent-blankline.nvim',
-  -- Enable `lukas-reineke/indent-blankline.nvim`
-  -- See `:help ibl`
-  main = 'ibl',
-  opts = {}
-}, -- "gc" to comment visual regions/lines
+  },
+  {
+    -- Set lualine as statusline
+    'nvim-lualine/lualine.nvim',
+    -- See `:help lualine.txt`
+    opts = {
+      options = {
+        icons_enabled = false,
+        theme = 'dracula-nvim',
+        component_separators = '|',
+        section_separators = ''
+      }
+    }
+  },
+  {
+    'lukas-reineke/indent-blankline.nvim',
+    main = 'ibl',
+    ---@module "ibl"
+    ---@type ibl.config
+    opts = {}
+  },
   {
     'numToStr/Comment.nvim',
     opts = {}
-  }, -- Fuzzy Finder (files, lsp, etc)
+  },
   {
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',
-    dependencies = { 'nvim-lua/plenary.nvim', -- Fuzzy Finder Algorithm which requires local dependencies to be built.
-      -- Only load if `make` is available. Make sure you have the system
-      -- requirements installed.
+    dependencies = {
+      'nvim-lua/plenary.nvim', -- Fuzzy Finder Algorithm which requires local dependencies to be built.
       {
         "nvim-telescope/telescope-live-grep-args.nvim",
         version = "^1.0.0",
@@ -241,69 +236,106 @@ require('lazy').setup({ -- NOTE: First, some plugins that don't require any conf
     config = function()
       require("telescope").load_extension("live_grep_args")
     end
-  }, {
-  -- Highlight, edit, and navigate code
-  'nvim-treesitter/nvim-treesitter',
-  dependencies = { 'nvim-treesitter/nvim-treesitter-textobjects' },
-  build = ':TSUpdate'
-}, {
-  -- theme
-  'Mofiqul/dracula.nvim',
-  lazy = false,
-  priority = 1000,
-  opts = {},
-  config = function()
-    vim.cmd.colorscheme 'dracula'
-  end
-}, {
-  "kdheepak/lazygit.nvim",
-  -- optional for floating window border decoration
-  dependencies = {
-    "nvim-telescope/telescope.nvim",
-    "nvim-lua/plenary.nvim",
   },
-  config = function()
-    require("telescope").load_extension("lazygit")
-  end,
-}, {
-  -- games
-  'ThePrimeagen/vim-be-good',
-}, {
+  {
+    'nvim-treesitter/nvim-treesitter',
+    dependencies = { 'nvim-treesitter/nvim-treesitter-textobjects' },
+    build = ':TSUpdate'
+  },
+  {
+    'Mofiqul/dracula.nvim',
+    lazy = false,
+    priority = 1000,
+    opts = {},
+    config = function()
+      vim.cmd.colorscheme 'dracula'
+    end
+  },
+  {
+    "kdheepak/lazygit.nvim",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      "nvim-lua/plenary.nvim",
+    },
+    config = function()
+      require("telescope").load_extension("lazygit")
+    end,
+  },
   'nvim-lua/plenary.nvim',
-}, {
-  -- fast switch buffer
-  'ThePrimeagen/harpoon',
-  config = function()
-    require('harpoon').setup()
-  end
-}, {
-  -- git without git
-  'mbbill/undotree',
-}, {
-  'wuelnerdotexe/vim-astro'
-}, {
-  import = 'custom.plugins'
-}, {
-  'zbirenbaum/copilot.lua',
-  cmd = "Copilot",
-  event = "InsertEnter",
-  config = function()
-    require("copilot").setup({})
-  end,
-}, {
-  "ray-x/go.nvim",
-  dependencies = { -- optional packages
-    "ray-x/guihua.lua",
-    "neovim/nvim-lspconfig",
-    "nvim-treesitter/nvim-treesitter",
+  {
+    -- fast switch buffer
+    'ThePrimeagen/harpoon',
+    config = function()
+      require('harpoon').setup()
+    end
   },
-  config = function()
-    require("go").setup()
-  end,
-  event = { "CmdlineEnter" },
-  ft = { "go", 'gomod' },
-  build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
-} })
+  {
+    -- git without git
+    'mbbill/undotree',
+  },
+  {
+    import = 'custom.plugins'
+  },
+  -- {
+  --   "ray-x/go.nvim",
+  --   dependencies = { -- optional packages
+  --     "ray-x/guihua.lua",
+  --     "neovim/nvim-lspconfig",
+  --     "nvim-treesitter/nvim-treesitter",
+  --   },
+  --   config = function()
+  --     require("go").setup()
+  --   end,
+  --   event = { "CmdlineEnter" },
+  --   ft = { "go", 'gomod' },
+  --   build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
+  -- },
+  {
+    -- Make sure to setup it properly if you have lazy=true
+    'MeanderingProgrammer/render-markdown.nvim',
+    opts = {
+      file_types = { "markdown", "Avante" },
+    },
+    ft = { "markdown", "Avante" },
+  },
+  {
+    "yetone/avante.nvim",
+    event = "VeryLazy",
+    lazy = false,
+    opts = {
+      -- add any opts here
+      provider = "claude"
+    },
+    keys = {
+      { "<leader>aa", function() require("avante.api").ask() end,     desc = "avante: ask",    mode = { "n", "v" } },
+      { "<leader>ar", function() require("avante.api").refresh() end, desc = "avante: refresh" },
+      { "<leader>ae", function() require("avante.api").edit() end,    desc = "avante: edit",   mode = "v" },
+    },
+    dependencies = {
+      "stevearc/dressing.nvim",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      --- The below dependencies are optional,
+      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+      {
+        -- support for image pasting
+        "HakonHarnes/img-clip.nvim",
+        event = "VeryLazy",
+        opts = {
+          -- recommended settings
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+              insert_mode = true,
+            },
+            -- required for Windows users
+            use_absolute_path = true,
+          },
+        },
+      },
+    },
+  } })
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -402,16 +434,11 @@ vim.keymap.set("n", "<leader>b", ":Neotree toggle<cr>", {
   desc = "Open Side[b]ar"
 })
 
-
--- next greatest remap ever : asbjornHaland
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
-
 vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
-
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
-
 vim.keymap.set("n", "J", "mzJ`z")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
@@ -421,7 +448,6 @@ vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
 vim.keymap.set("n", "<C-j>", "<cmd>mcprev<CR>zz")
 vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
-
 vim.keymap.set('n', '<leader><F5>', vim.cmd.UndotreeToggle, { desc = "Undo Tree" })
 vim.keymap.set('n', '<leader>lg', ":LazyGit<CR>", { desc = "[l]azy [G]it", silent = true })
 
@@ -430,6 +456,7 @@ vim.keymap.set('n', '<leader>lg', ":LazyGit<CR>", { desc = "[l]azy [G]it", silen
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', {
   clear = true
 })
+
 vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function()
     vim.highlight.on_yank()
@@ -518,9 +545,7 @@ vim.keymap.set('n', '<leader>s/', telescope_live_grep_open_files, {
   desc = '[S]earch [/] in Open Files'
 })
 
-
 vim.keymap.set("n", "<leader>fg", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
-
 
 vim.keymap.set('n', '<leader>ss', require('telescope.builtin').builtin, {
   desc = '[S]earch [S]elect Telescope'
@@ -556,11 +581,10 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, {
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc',
-      'vim', 'bash' },
+    ensure_installed = { 'go', 'lua', 'python', 'vimdoc', 'vim', 'bash' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
-    auto_install = false,
+    auto_install = true,
 
     highlight = {
       enable = true
@@ -736,10 +760,11 @@ require('mason-lspconfig').setup()
 local servers = {
   -- clangd = {},
   gopls = {},
+  css = {},
   -- pyright = {},
   -- rust_analyzer = {},
   -- tsserver = {},
-  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
+  html = { filetypes = { 'html', 'twig', 'hbs' } },
   templ = {},
   lua_ls = {
     Lua = {
@@ -764,6 +789,20 @@ require('neodev').setup()
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
+require('lspconfig').html.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = { "html", "templ" },
+})
+
+require('lspconfig').htmx.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = { "html", "templ" },
+})
+
+require('lspconfig').ols.setup({})
+
 -- Ensure the servers above are installed
 local mason_lspconfig = require 'mason-lspconfig'
 
@@ -779,18 +818,6 @@ mason_lspconfig.setup_handlers { function(server_name)
     filetypes = (servers[server_name] or {}).filetypes
   }
 end }
-
-require('lspconfig').html.setup({
-    on_attach = on_attach,
-    capabilities = capabilities,
-    filetypes = { "html", "templ" },
-})
-
-require('lspconfig').htmx.setup({
-    on_attach = on_attach,
-    capabilities = capabilities,
-    filetypes = { "html", "templ" },
-})
 
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`
@@ -837,15 +864,13 @@ cmp.setup {
       end
     end, { 'i', 's' })
   },
-  sources = { {
-    name = 'nvim_lsp'
-  }, {
-    name = 'luasnip'
-  }, {
-    name = 'path'
-  } }
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'nvim_lsp_signature_help' },
+    { name = 'luasnip' },
+    { name = 'path' },
+  }
 }
-
 
 -- [[NeoTree Setup]]
 
@@ -858,13 +883,6 @@ require("neo-tree").setup({
   open_files_do_not_replace_types = { "terminal", "trouble", "qf" }, -- when opening files, do not use windows containing these filetypes or buftypes
   sort_case_insensitive = false,                                     -- used when sorting files and directories in the tree
   sort_function = nil,                                               -- use a custom function for sorting files and directories in the tree
-  -- sort_function = function (a,b)
-  --       if a.type == b.type then
-  --           return a.path > b.path
-  --       else
-  --           return a.type > b.type
-  --       end
-  --   end , -- this sorts files and directories descendantly
   default_component_configs = {
     container = {
       enable_character_fade = true
@@ -1118,12 +1136,7 @@ require("neo-tree").setup({
   }
 })
 
-
--- [[Harpoon]]
-require("telescope").load_extension('harpoon')
-
 -- [[Diagnostics Styling]]
-
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
   vim.lsp.handlers.signature_help, {
     border = "single"
@@ -1136,12 +1149,15 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
   }
 )
 
--- [[ GO ]]
-require('go').setup()
+-- [[ IBL ]]
+require("ibl").setup()
 
---vim.diagnostic.config{
---  float={border = "single"}
---}
+-- FMT on save?
+vim.api.nvim_create_autocmd('BufWritePre', {
+  callback = function()
+    vim.lsp.buf.format()
+  end,
+})
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
