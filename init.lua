@@ -28,6 +28,7 @@ require('lazy').setup({
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
   'joerdav/templ.vim',
+  'sindrets/diffview.nvim',
   {
     -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
@@ -450,6 +451,7 @@ vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 vim.keymap.set('n', '<leader><F5>', vim.cmd.UndotreeToggle, { desc = "Undo Tree" })
 vim.keymap.set('n', '<leader>lg', ":LazyGit<CR>", { desc = "[l]azy [G]it", silent = true })
+vim.keymap.set('n', '<leader>gd', ":DiffviewOpen<CR>", { desc = "[G]it [D]iff", silent = true })
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -760,7 +762,6 @@ require('mason-lspconfig').setup()
 local servers = {
   -- clangd = {},
   gopls = {},
-  css = {},
   -- pyright = {},
   -- rust_analyzer = {},
   -- tsserver = {},
