@@ -15,12 +15,14 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- views can only be fully collapsed with the global statusline
+vim.opt.laststatus = 3
+
 -- disable netrw for nvim-tree
 
 -- [[ Configure plugins ]]
 -- NOTE: Here is where you install your plugins.
 --  You can configure plugins using the `config` key.
---
 --  You can also configure plugins after the setup call,
 --    as they will be available in your neovim runtime.
 require('lazy').setup({
@@ -29,6 +31,7 @@ require('lazy').setup({
   'tpope/vim-rhubarb',
   'joerdav/templ.vim',
   'sindrets/diffview.nvim',
+  'nvim-tree/nvim-web-devicons',
   {
     -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
@@ -63,14 +66,17 @@ require('lazy').setup({
   },
   {
     'folke/trouble.nvim',
-    dependencies = {
-      "nvim-tree/nvim-web-devicons",
+    opts = {
+      focus = true
     },
-    config = function()
-      require("trouble").setup {
-        icons = false,
-      }
-    end
+    cmd = "Trouble",
+    keys = {
+      {
+        "<leader>q",
+        "<cmd>Trouble diagnostics toggle<cr>",
+        desc = "Diagnostics (Trouble)",
+      },
+    },
   },
   {
     'lewis6991/gitsigns.nvim',
@@ -303,21 +309,17 @@ require('lazy').setup({
     "yetone/avante.nvim",
     event = "VeryLazy",
     lazy = false,
+    version = "*", -- set this to "*" if you want to always pull the latest change, false to update on release
+    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    build = "make",
     opts = {
-      -- add any opts here
       provider = "claude"
     },
-    keys = {
-      { "<leader>aa", function() require("avante.api").ask() end,     desc = "avante: ask",    mode = { "n", "v" } },
-      { "<leader>ar", function() require("avante.api").refresh() end, desc = "avante: refresh" },
-      { "<leader>ae", function() require("avante.api").edit() end,    desc = "avante: edit",   mode = "v" },
-    },
+    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
     dependencies = {
       "stevearc/dressing.nvim",
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
-      --- The below dependencies are optional,
-      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
       {
         -- support for image pasting
         "HakonHarnes/img-clip.nvim",
@@ -421,10 +423,6 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, {
 })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, {
   desc = 'Go to next diagnostic message'
-})
--- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
-vim.keymap.set('n', '<leader>q', ":TroubleToggle<cr>", {
-  desc = 'Open diagnostics list'
 })
 
 vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, {
@@ -583,7 +581,7 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, {
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'go', 'lua', 'python', 'vimdoc', 'vim', 'bash' },
+    ensure_installed = { 'go', 'lua', 'python', 'vimdoc', 'vim', 'bash', 'markdown', 'markdown_inline' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = true,
@@ -1135,4 +1133,3 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
-
