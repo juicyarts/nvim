@@ -27,6 +27,7 @@ vim.opt.laststatus = 3
 --    as they will be available in your neovim runtime.
 require('lazy').setup({
   'tpope/vim-sleuth',
+  'mfussenegger/nvim-dap',
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
   'joerdav/templ.vim',
@@ -1131,5 +1132,29 @@ vim.api.nvim_create_autocmd('BufWritePre', {
   end,
 })
 
+-- GODOT specific
+require('lspconfig').gdscript.setup({
+  name = "godot",
+  cmd = vim.lsp.rpc.connect("127.0.0.1", 6005),
+})
+
+local dap = require("dap")
+dap.adapters.godot = {
+  type = "server",
+  host = "127.0.0.1",
+  port = 6006,
+}
+
+dap.configurations.gdscript = {
+  {
+    type = "godot",
+    request = "launch",
+    name = "Launch scene",
+    project = "${workspaceFolder}",
+    launch_scene = true,
+  },
+}
+-- views can only be fully collapsed with the global statusline
+vim.opt.laststatus = 3
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
