@@ -1,10 +1,18 @@
--- autoformat.lua
---
--- Use your language server to automatically format your code on save.
--- Adds additional commands as well to manage the behavior
-
 return {
   'neovim/nvim-lspconfig',
+  dependencies = { -- Automatically install LSPs to stdpath for neovim
+    {
+      'williamboman/mason.nvim',
+      config = true
+    },
+    'williamboman/mason-lspconfig.nvim', -- Useful status updates for LSP
+    -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
+    {
+      'j-hui/fidget.nvim',
+      opts = {}
+    }, -- Additional lua configuration, makes nvim stuff amazing!
+    'folke/neodev.nvim'
+  },
   config = function()
     -- Switch for controlling whether you want autoformatting.
     --  Use :KickstartFormatToggle to toggle autoformatting on or off
@@ -28,6 +36,12 @@ return {
       return _augroups[client.id]
     end
 
+    local lspconfig = require('lspconfig')
+
+    lspconfig.gdscript.setup({
+      name = "godot",
+      cmd = vim.lsp.rpc.connect("127.0.0.1", 6005),
+    })
     -- Whenever an LSP attaches to a buffer, we will run this function.
     --
     -- See `:help LspAttach` for more information about this autocmd event.
@@ -40,7 +54,7 @@ return {
         local bufnr = args.buf
 
         -- Only attach to clients that support document formatting
-        if not client.server_capabilities.documentFormattingProvider then
+        if not client == nil and not client.server_capabilities.documentFormattingProvider then
           return
         end
 
