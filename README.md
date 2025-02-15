@@ -1,14 +1,11 @@
 # Juicy Nvim
 
-This repo is based on https://github.com/nvim-lua/kickstart.nvim customized for my
-needs
+A juicy neovim setup based off kickstart.nvim using lazy and a lot of other goodies:
 
-## Includes
-
-* [Dracula](https://draculatheme.com/vim)
-* [Harpoon](https://github.com/ThePrimeagen/harpoon)
-* [Neo-tree](https://github.com/nvim-neo-tree/neo-tree.nvim)
-* [Undotree](https://github.com/mbbill/undotree)
-* Markdown, Mdx & Astro support
-* Minro diagtnostics styling
-* etc.
+* lsp/treesitter/mason setups tailored for go development
+* neo-tree.nvim for a sidebar/file view
+* avante.nvim for code assistence
+* trouble for diagnostics
+* lazygit, undotree, dap
+* qol additions for code signatures and diagnostics
+* [many more](./lua/plugins/)
