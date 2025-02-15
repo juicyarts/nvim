@@ -28,11 +28,24 @@ vim.opt.laststatus = 3
 require('lazy').setup({
   'tpope/vim-sleuth',
   'mfussenegger/nvim-dap',
+  'leoluz/nvim-dap-go',
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
   'joerdav/templ.vim',
   'sindrets/diffview.nvim',
   'nvim-tree/nvim-web-devicons',
+  'aznhe21/actions-preview.nvim',
+  'LunarVim/bigfile.nvim',
+  'gpanders/editorconfig.nvim',
+  {
+    "kylechui/nvim-surround",
+    version = "*", -- Use for stability; omit to use `main` branch for the latest features
+    event = "VeryLazy",
+    config = function()
+      require("nvim-surround").setup({
+      })
+    end
+  },
   {
     -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
@@ -62,6 +75,26 @@ require('lazy').setup({
     }
   },
   {
+    "chrisgrieser/nvim-spider",
+    keys = {
+      {
+        "w",
+        "<cmd>lua require('spider').motion('w')<CR>",
+        mode = { "n", "o", "x" },
+      },
+      {
+        "e",
+        "<cmd>lua require('spider').motion('e')<CR>",
+        mode = { "n", "o", "x" },
+      },
+      {
+        "b",
+        "<cmd>lua require('spider').motion('b')<CR>",
+        mode = { "n", "o", "x" },
+      },
+    },
+  },
+  {
     'folke/which-key.nvim',
     opts = {}
   },
@@ -76,6 +109,57 @@ require('lazy').setup({
         "<leader>q",
         "<cmd>Trouble diagnostics toggle<cr>",
         desc = "Diagnostics (Trouble)",
+      },
+    },
+  },
+  {
+    "nvim-pack/nvim-spectre",
+    opts = {},
+    keys = {
+      {
+        mode = "n",
+        "<D-S-r>",
+        "<cmd>lua require('spectre').toggle()<CR>",
+      },
+      {
+        mode = "v",
+        "<D-S-r>",
+        ":lua require('spectre').open_visual()<CR>",
+      },
+    },
+  },
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    dependencies = { "MunifTanjim/nui.nvim" },
+    opts = {
+      presets = {
+        lsp_doc_border = true,
+      },
+      lsp = {
+        progress = {
+          enabled = false,
+        },
+        hover = {
+          enabled = false,
+        },
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+          ["cmp.entry.get_documentation"] = true,
+        },
+      },
+      notify = {
+        view = "mini",
+      },
+      routes = {
+        {
+          filter = {
+            event = "notify",
+            find = "No information available",
+          },
+          opts = { skip = true },
+        },
       },
     },
   },
@@ -247,7 +331,15 @@ require('lazy').setup({
   },
   {
     'nvim-treesitter/nvim-treesitter',
-    dependencies = { 'nvim-treesitter/nvim-treesitter-textobjects' },
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter-textobjects',
+      {
+        "nvim-treesitter/nvim-treesitter-context",
+        opts = {
+          max_lines = 1,
+        },
+      },
+    },
     build = ':TSUpdate'
   },
   {
@@ -313,8 +405,31 @@ require('lazy').setup({
     version = "*", -- set this to "*" if you want to always pull the latest change, false to update on release
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = "make",
+    mappings = {
+      suggestion = {
+        accept = "<D-l>",
+        next = "<D-]>",
+        prev = "<D-[>",
+        dismiss = "<C-]>",
+      },
+    },
     opts = {
-      provider = "claude"
+      provider = "claude",
+      auto_suggestions_provider = "copilot",
+      -- gemini = {
+      --   -- @see https://ai.google.dev/gemini-api/docs/models/gemini
+      --   model = "gemini-2.0-flash-001",
+      --   -- model = "gemini-1.5-flash",
+      -- },
+      -- provider = "deepseek",
+      -- vendors = {
+      --   deepseek = {
+      --     __inherited_from = "openai",
+      --     api_key_name = "",
+      --     endpoint = "http://127.0.0.1:11434/v1",
+      --     model = "deepseek-r1:8b"
+      --   }
+      -- }
     },
     -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
     dependencies = {
@@ -1122,6 +1237,59 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
   }
 )
 
+require('dap-go').setup {
+  -- Additional dap configurations can be added.
+  -- dap_configurations accepts a list of tables where each entry
+  -- represents a dap configuration. For more details do:
+  -- :help dap-configuration
+  dap_configurations = {
+    {
+      -- Must be "go" or it will be ignored by the plugin
+      type = "go",
+      name = "Attach remote",
+      mode = "remote",
+      request = "attach",
+    },
+  },
+  -- delve configurations
+  delve = {
+    -- the path to the executable dlv which will be used for debugging.
+    -- by default, this is the "dlv" executable on your PATH.
+    path = "dlv",
+    -- time to wait for delve to initialize the debug session.
+    -- default to 20 seconds
+    initialize_timeout_sec = 20,
+    -- a string that defines the port to start delve debugger.
+    -- default to string "${port}" which instructs nvim-dap
+    -- to start the process in a random available port.
+    -- if you set a port in your debug configuration, its value will be
+    -- assigned dynamically.
+    port = "${port}",
+    -- additional args to pass to dlv
+    args = {},
+    -- the build flags that are passed to delve.
+    -- defaults to empty string, but can be used to provide flags
+    -- such as "-tags=unit" to make sure the test suite is
+    -- compiled during debugging, for example.
+    -- passing build flags using args is ineffective, as those are
+    -- ignored by delve in dap mode.
+    -- avaliable ui interactive function to prompt for arguments get_arguments
+    build_flags = {},
+    -- whether the dlv process to be created detached or not. there is
+    -- an issue on delve versions < 1.24.0 for Windows where this needs to be
+    -- set to false, otherwise the dlv server creation will fail.
+    -- avaliable ui interactive function to prompt for build flags: get_build_flags
+    detached = vim.fn.has("win32") == 0,
+    -- the current working directory to run dlv from, if other than
+    -- the current working directory.
+    cwd = nil,
+  },
+  -- options related to running closest test
+  tests = {
+    -- enables verbosity when running the test.
+    verbose = false,
+  },
+}
 -- [[ IBL ]]
 require("ibl").setup()
 
