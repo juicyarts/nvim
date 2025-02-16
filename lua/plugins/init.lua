@@ -22,8 +22,7 @@ return {
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
     event = "VeryLazy",
     config = function()
-      require("nvim-surround").setup({
-      })
+      require("nvim-surround").setup()
     end
   },
   {
@@ -55,13 +54,8 @@ return {
     keys = {
       {
         mode = "n",
-        "<D-S-r>",
+        "<leader>st",
         "<cmd>lua require('spectre').toggle()<CR>",
-      },
-      {
-        mode = "v",
-        "<D-S-r>",
-        ":lua require('spectre').open_visual()<CR>",
       },
     },
   },

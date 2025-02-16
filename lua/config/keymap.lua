@@ -45,7 +45,7 @@ vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
 vim.keymap.set("n", "<C-j>", "<cmd>mcprev<CR>zz")
 vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
-vim.keymap.set('n', '<leader><F5>', vim.cmd.UndotreeToggle, { desc = "Undo Tree" })
+vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle, { desc = "Undo Tree" })
 vim.keymap.set('n', '<leader>lg', ":LazyGit<CR>", { desc = "[l]azy [G]it", silent = true })
 vim.keymap.set('n', '<leader>gd', ":DiffviewOpen<CR>", { desc = "[G]it [D]iff", silent = true })
 
