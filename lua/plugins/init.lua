@@ -58,6 +58,20 @@ return {
         "<cmd>lua require('spectre').toggle()<CR>",
       },
     },
+    config = function()
+      require("spectre").setup({
+        replace_engine = {
+          ["sed"] = {
+            cmd = "sed",
+            args = {
+              "-i",
+              "",
+              "-E",
+            },
+          },
+        },
+      })
+    end
   },
   {
     "folke/noice.nvim",
