@@ -38,6 +38,7 @@ return {
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
         'delve',
+        'coldelldb'
       },
     }
 
@@ -47,9 +48,6 @@ return {
     vim.keymap.set('n', '<F2>', dap.step_over, { desc = 'Debug: Step Over' })
     vim.keymap.set('n', '<F3>', dap.step_out, { desc = 'Debug: Step Out' })
     vim.keymap.set('n', '<leader>Bb', dap.toggle_breakpoint, { desc = 'Debug: Toggle Breakpoint' })
-    vim.keymap.set('n', '<leader>Bp', function()
-      dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
-    end, { desc = 'Debug: Set Breakpoint' })
 
     -- Dap UI setup
     -- For more information, see |:help nvim-dap-ui|
@@ -148,6 +146,17 @@ return {
         name = "Launch scene",
         project = "${workspaceFolder}",
         launch_scene = true,
+      },
+    }
+    -- Get the path to `codelldb` installed by Mason.nvim
+    local codelldb_path = require("mason-registry").get_package("codelldb"):get_install_path() .. "/extension"
+    local codelldb_bin = codelldb_path .. "/adapter/codelldb"
+    dap.adapters.codelldb = {
+      type = "server",
+      port = "${port}",
+      executable = {
+        command = codelldb_bin,
+        args = { "--port", "${port}" },
       },
     }
   end,
