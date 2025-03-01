@@ -12,6 +12,34 @@ return {
   {
     'stevearc/overseer.nvim',
     opts = {},
+    config = function()
+      require('overseer').setup()
+    end
+  },
+  {
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-neotest/nvim-nio",
+      "nvim-lua/plenary.nvim",
+      "nvim-neotest/neotest-plenary",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-neotest/neotest-vim-test",
+      "orjangj/neotest-ctest",
+      { "fredrikaverpil/neotest-golang", version = "*" },
+    },
+    config = function()
+      require("neotest").setup({
+        adapters = {
+          -- require("neotest-plenary"),
+          require("neotest-golang"),
+          require("neotest-ctest").setup({}),
+          -- require("neotest-vim-test")({
+          --   ignore_file_types = { "python", "vim", "lua", "go" },
+          -- }),
+        },
+      })
+    end
   },
   {
     -- Make sure to setup it properly if you have lazy=true
