@@ -13,11 +13,22 @@ return {
     },
   },
   opts = {
-    provider = "claude",
+    provider = "gemini",
     --- @class AvanteRepoMapConfig
     repo_map = {
       ignore_patterns = { "%.git", "%.worktree", "__pycache__", "node_modules", ".env", "app.env" }, -- ignore files matching these
-      negate_patterns = {},                                                                          -- negate ignore files matching these.
+    },
+    -- dual_boost = {
+    --   enabled = false,
+    --   first_provider = "claude",
+    --   second_provider = "gemini",
+    --   prompt =
+    --   "Based on the two reference outputs below, generate a response that incorporates elements from both but reflects your own judgment and unique perspective. Do not provide any explanation, just give the response directly. Reference Output 1: [{{provider1_output}}], Reference Output 2: [{{provider2_output}}]",
+    --   timeout = 60000, -- Timeout in milliseconds
+    -- },
+    behaviour = {
+      auto_set_highlight_group = true,
+      auto_set_keymaps = true,
     },
   },
   -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows

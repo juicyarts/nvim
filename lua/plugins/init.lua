@@ -10,6 +10,10 @@ return {
   'folke/which-key.nvim',
   'nvim-lua/plenary.nvim',
   {
+    'stevearc/overseer.nvim',
+    opts = {},
+  },
+  {
     -- Make sure to setup it properly if you have lazy=true
     'MeanderingProgrammer/render-markdown.nvim',
     opts = {
