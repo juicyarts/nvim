@@ -17,6 +17,11 @@ return {
     end
   },
   {
+    "davidmh/mdx.nvim",
+    config = true,
+    dependencies = { "nvim-treesitter/nvim-treesitter" }
+  },
+  {
     "nvim-neotest/neotest",
     dependencies = {
       "nvim-neotest/nvim-nio",
