@@ -150,15 +150,15 @@ return {
       },
     }
     -- Get the path to `codelldb` installed by Mason.nvim
-    local codelldb_path = require("mason-registry").get_package("codelldb"):get_install_path() .. "/extension"
-    local codelldb_bin = codelldb_path .. "/adapter/codelldb"
-    dap.adapters.codelldb = {
-      type = "server",
-      port = "${port}",
-      executable = {
-        command = codelldb_bin,
-        args = { "--port", "${port}" },
-      },
-    }
+    -- local codelldb_path = require("mason-registry").get_package("codelldb"):get_install_path() .. "/extension"
+    -- local codelldb_bin = codelldb_path .. "/adapter/codelldb"
+    -- dap.adapters.codelldb = {
+    --   type = "server",
+    --   port = "${port}",
+    --   executable = {
+    --     command = codelldb_bin,
+    --     args = { "--port", "${port}" },
+    --   },
+    -- }
   end,
 }

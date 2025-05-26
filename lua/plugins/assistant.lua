@@ -13,7 +13,9 @@ return {
     },
   },
   opts = {
-    provider = "claude",
+    provider = "gemini",
+    mode = "legacy",
+    -- cursor_applying_provider = 'gemini',
     --- @class AvanteRepoMapConfig
     repo_map = {
       ignore_patterns = { "%.git", "%.worktree", "__pycache__", "node_modules", ".env", "app.env" }, -- ignore files matching these
@@ -29,6 +31,7 @@ return {
     behaviour = {
       auto_set_highlight_group = true,
       auto_set_keymaps = true,
+      -- enable_cursor_planning_mode = true, -- enable cursor planning mode!
     },
   },
   -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
