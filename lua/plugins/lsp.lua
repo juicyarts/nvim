@@ -41,6 +41,7 @@ return {
       name = "godot",
       cmd = vim.lsp.rpc.connect("127.0.0.1", 6005),
     })
+
     -- Whenever an LSP attaches to a buffer, we will run this function.
     --
     -- See `:help LspAttach` for more information about this autocmd event.
@@ -56,14 +57,6 @@ return {
         if not client == nil and not client.server_capabilities.documentFormattingProvider then
           return
         end
-
-        -- Tsserver usually works poorly. Sorry you work with bad languages
-        -- You can remove this line if you know what you're doing :)
-
-        -- commenting out in favor of https://github.com/pmizio/typescript-tools.nvim ?
-        --if client.name == 'tsserver' then
-        --  return
-        --end
 
         -- Create an autocmd that will run *before* we save the buffer.
         --  Run the formatting command for the LSP that has just attached.

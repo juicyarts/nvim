@@ -42,16 +42,44 @@ local on_attach = function(_, bufnr)
   })
 end
 
--- Add the same capabilities to ALL server configurations.
--- Refer to :h vim.lsp.config() for more information.
 vim.lsp.config("*", {
   capabilities = vim.lsp.protocol.make_client_capabilities()
 })
 
--- mason-lspconfig requires that these setup functions are called in this order
--- before setting up the servers.
-require('mason').setup()
-require('mason-lspconfig').setup()
+vim.lsp.config('lua_ls', {
+  on_init = function(client)
+    if client.workspace_folders then
+      local path = client.workspace_folders[1].name
+      if
+          path ~= vim.fn.stdpath('config')
+          and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
+      then
+        return
+      end
+    end
+
+    client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+      runtime = {
+        version = 'LuaJIT',
+        path = {
+          'lua/?.lua',
+          'lua/?/init.lua',
+        },
+      },
+      -- Make the server aware of Neovim runtime files
+      workspace = {
+        checkThirdParty = false,
+        library = {
+          vim.env.VIMRUNTIME
+        }
+      }
+    })
+  end,
+  settings = {
+    Lua = {}
+  }
+})
+
 
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -73,10 +101,18 @@ local servers = {
       telemetry = {
         enable = false
       },
-      diagnostics = { disable = { 'missing-fields' } },
+      diagnostics = {
+        disable = { 'missing-fields' },
+        globals = { "vim" },
+      },
     }
   }
 }
+
+-- mason-lspconfig requires that these setup functions are called in this order
+-- before setting up the servers.
+require('mason').setup()
+require('mason-lspconfig').setup()
 
 vim.filetype.add({ extension = { templ = "templ" } })
 
@@ -92,14 +128,21 @@ mason_lspconfig.setup {
   ensure_installed = vim.tbl_keys(servers)
 }
 
+local lspconfig = require('lspconfig')
+
 for server_name, _ in pairs(servers) do
-  require('lspconfig')[server_name].setup {
+  lspconfig[server_name].setup {
     capabilities = capabilities,
     on_attach = on_attach,
     settings = servers[server_name],
     filetypes = (servers[server_name] or {}).filetypes
   }
 end
+
+lspconfig.gdscript.setup({
+  name = "godot",
+  cmd = vim.lsp.rpc.connect("127.0.0.1", 6005),
+})
 
 -- Setup neovim lua configuration
 require('neodev').setup()
