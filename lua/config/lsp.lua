@@ -42,14 +42,16 @@ local on_attach = function(_, bufnr)
   })
 end
 
+-- Add the same capabilities to ALL server configurations.
+-- Refer to :h vim.lsp.config() for more information.
+vim.lsp.config("*", {
+  capabilities = vim.lsp.protocol.make_client_capabilities()
+})
+
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
 require('mason').setup()
-require('mason-lspconfig').setup({
-})
-
--- Setup neovim lua configuration
-require('neodev').setup()
+require('mason-lspconfig').setup()
 
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -98,3 +100,6 @@ for server_name, _ in pairs(servers) do
     filetypes = (servers[server_name] or {}).filetypes
   }
 end
+
+-- Setup neovim lua configuration
+require('neodev').setup()
