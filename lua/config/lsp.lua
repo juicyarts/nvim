@@ -93,6 +93,7 @@ local servers = {
   gopls = {},
   html = { filetypes = { 'html', 'twig', 'hbs', 'templ' } },
   templ = {},
+  ts_ls = {},
   lua_ls = {
     Lua = {
       workspace = {
@@ -109,12 +110,11 @@ local servers = {
   }
 }
 
+vim.filetype.add({ extension = { templ = "templ" } })
+
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
 require('mason').setup()
-require('mason-lspconfig').setup()
-
-vim.filetype.add({ extension = { templ = "templ" } })
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
