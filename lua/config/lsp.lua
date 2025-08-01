@@ -93,7 +93,8 @@ local servers = {
   gopls = {},
   html = { filetypes = { 'html', 'twig', 'hbs', 'templ' } },
   templ = {},
-  ts_ls = {},
+  terraformls = {},
+  tflint = {},
   lua_ls = {
     Lua = {
       workspace = {
