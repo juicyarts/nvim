@@ -129,15 +129,13 @@ mason_lspconfig.setup {
   ensure_installed = vim.tbl_keys(servers)
 }
 
-local lspconfig = require('lspconfig')
-
 for server_name, _ in pairs(servers) do
-  lspconfig[server_name].setup {
+  vim.lsp.config(server_name, {
     capabilities = capabilities,
     on_attach = on_attach,
     settings = servers[server_name],
     filetypes = (servers[server_name] or {}).filetypes
-  }
+  })
 end
 
 lspconfig.gdscript.setup({

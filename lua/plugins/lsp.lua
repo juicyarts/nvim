@@ -35,13 +35,6 @@ return {
       return _augroups[client.id]
     end
 
-    local lspconfig = require('lspconfig')
-
-    lspconfig.gdscript.setup({
-      name = "godot",
-      cmd = vim.lsp.rpc.connect("127.0.0.1", 6005),
-    })
-
     -- Whenever an LSP attaches to a buffer, we will run this function.
     --
     -- See `:help LspAttach` for more information about this autocmd event.

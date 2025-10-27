@@ -9,6 +9,7 @@ return {
   'gpanders/editorconfig.nvim',
   'folke/which-key.nvim',
   'nvim-lua/plenary.nvim',
+  'edgedb/edgedb-vim',
   {
     'stevearc/overseer.nvim',
     opts = {},
