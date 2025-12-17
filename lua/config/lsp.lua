@@ -91,7 +91,7 @@ vim.lsp.config('lua_ls', {
 --  define the property 'filetypes' to the map in question.
 local servers = {
   gopls = {},
-  html = { filetypes = { 'html', 'twig', 'hbs', 'templ' } },
+  html = { filetypes = { 'html', 'twig', 'hbs' } },
   templ = {},
   terraformls = {},
   tflint = {},
@@ -136,9 +136,10 @@ for server_name, _ in pairs(servers) do
     settings = servers[server_name],
     filetypes = (servers[server_name] or {}).filetypes
   })
+  vim.lsp.enable(server_name)
 end
 
-lspconfig.gdscript.setup({
+vim.lsp.config("gdscript", {
   name = "godot",
   cmd = vim.lsp.rpc.connect("127.0.0.1", 6005),
 })
