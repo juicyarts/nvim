@@ -9,6 +9,11 @@ return {
       "clangd",
       "clang-format",
       "codelldb",
+      -- TypeScript/JavaScript
+      "typescript-language-server",
+      "eslint-lsp",
+      "prettierd",
+      "stylua",
     }
   }
 }

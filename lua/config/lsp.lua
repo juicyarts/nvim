@@ -95,8 +95,57 @@ local servers = {
   templ = {},
   terraformls = {},
   tflint = {},
-  json = {
-    filetypes = { 'json', 'jsonc' }
+  ts_ls = {
+    settings = {
+      typescript = {
+        inlayHints = {
+          includeInlayParameterNameHints = 'all',
+          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayVariableTypeHints = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayEnumMemberValueHints = true,
+        }
+      },
+      javascript = {
+        inlayHints = {
+          includeInlayParameterNameHints = 'all',
+          includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayVariableTypeHints = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayEnumMemberValueHints = true,
+        }
+      }
+    }
+  },
+  eslint = {
+    settings = {
+      codeAction = {
+        disableRuleComment = {
+          enable = true,
+          location = "separateLine"
+        },
+        showDocumentation = {
+          enable = true
+        }
+      },
+      codeActionOnSave = {
+        enable = false,
+        mode = "all"
+      },
+      format = true,
+      nodePath = "",
+      onIgnoredFiles = "off",
+      packageManager = "npm",
+      quiet = false,
+      rulesCustomizations = {},
+      run = "onType",
+      useESLintClass = false,
+      validate = "on"
+    }
   },
   lua_ls = {
     Lua = {
@@ -149,3 +198,6 @@ vim.lsp.config("gdscript", {
 
 -- Setup neovim lua configuration
 require('neodev').setup()
+
+-- Setup TypeScript/JavaScript configuration
+require('config.typescript').setup()
