@@ -9,14 +9,6 @@ return {
   'gpanders/editorconfig.nvim',
   'folke/which-key.nvim',
   'nvim-lua/plenary.nvim',
-  'edgedb/edgedb-vim',
-  {
-    'stevearc/overseer.nvim',
-    opts = {},
-    config = function()
-      require('overseer').setup()
-    end
-  },
   {
     -- Make sure to setup it properly if you have lazy=true
     'MeanderingProgrammer/render-markdown.nvim',

@@ -74,7 +74,6 @@ vim.keymap.set(
 -- document existing key chains
 require('which-key').add {
   { '<leader>c', group = '[C]ode' },
-  { '<leader>d', group = '[D]ocument' },
   { '<leader>g', group = '[G]it' },
   { '<leader>h', group = 'Git [H]unk' },
   { '<leader>r', group = '[R]ename' },
@@ -82,6 +81,55 @@ require('which-key').add {
   { '<leader>t', group = '[T]oggle' },
   { '<leader>w', group = '[W]orkspace' },
 }
+
+-- Go specific keymaps (only for Go files)
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "go",
+  callback = function()
+    local opts = { noremap = true, silent = true, buffer = true }
+    -- Go run
+    vim.keymap.set('n', '<leader>gr', '<cmd>GoRun<CR>', opts)
+    -- Go build
+    vim.keymap.set('n', '<leader>gb', '<cmd>GoBuild<CR>', opts)
+    -- Go install
+    vim.keymap.set('n', '<leader>gi', '<cmd>GoInstall<CR>', opts)
+    -- Generate go.mod
+    vim.keymap.set('n', '<leader>gm', '<cmd>GoMod init<CR>', opts)
+    -- Tidy go.mod
+    vim.keymap.set('n', '<leader>gt', '<cmd>GoMod tidy<CR>', opts)
+    -- Get package
+    vim.keymap.set('n', '<leader>gp', '<cmd>GoGet<CR>', opts)
+    -- Add import
+    vim.keymap.set('n', '<leader>ga', '<cmd>GoImport<CR>', opts)
+    -- Generate interface stub
+    vim.keymap.set('n', '<leader>gs', '<cmd>GoImpl<CR>', opts)
+    -- Generate fill struct
+    vim.keymap.set('n', '<leader>gf', '<cmd>GoFillStruct<CR>', opts)
+    -- Add struct tags
+    vim.keymap.set('n', '<leader>gj', '<cmd>GoAddTags<CR>', opts)
+    -- Remove struct tags  
+    vim.keymap.set('n', '<leader>gk', '<cmd>GoRmTags<CR>', opts)
+    -- Clear struct tags
+    vim.keymap.set('n', '<leader>gc', '<cmd>GoClearTags<CR>', opts)
+    
+    -- Go-specific which-key groups
+    require('which-key').add {
+      { '<leader>g', group = '[G]o', buffer = true },
+      { '<leader>ga', '[G]o [A]dd Import', buffer = true },
+      { '<leader>gb', '[G]o [B]uild', buffer = true },
+      { '<leader>gc', '[G]o [C]lear Tags', buffer = true },
+      { '<leader>gf', '[G]o [F]ill Struct', buffer = true },
+      { '<leader>gi', '[G]o [I]nstall', buffer = true },
+      { '<leader>gj', '[G]o Add T[a]gs', buffer = true },
+      { '<leader>gk', '[G]o R[m] Tags', buffer = true },
+      { '<leader>gm', '[G]o Go[m]od Init', buffer = true },
+      { '<leader>gp', '[G]o Get Packa[g]e', buffer = true },
+      { '<leader>gr', '[G]o [R]un', buffer = true },
+      { '<leader>gs', '[G]o Generate [S]tub', buffer = true },
+      { '<leader>gt', '[G]o [T]idy', buffer = true },
+    }
+  end,
+})
 -- register which-key VISUAL mode
 -- required for visual <leader>hs (hunk stage) to work
 require('which-key').add({

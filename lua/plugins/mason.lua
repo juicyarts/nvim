@@ -1,19 +1,28 @@
 return {
   'williamboman/mason.nvim',
   dependencies = {
-    'williamboman/mason-lspconfig.nvim', -- Useful status updates for LSP
+    'williamboman/mason-lspconfig.nvim',
   },
   opts = {
     ensure_installed = {
-      "go",
-      "clangd",
-      "clang-format",
-      "codelldb",
+      -- Go tools
+      "gopls",
+      "gofumpt",
+      "goimports",
+      "golines",
+      "staticcheck",
+      "revive",
+      "gomodifytags",
+      "impl",
       -- TypeScript/JavaScript
       "typescript-language-server",
       "eslint-lsp",
       "prettierd",
+      -- Lua
       "stylua",
+      -- Other
+      "clangd",
+      "clang-format",
     }
   }
 }
