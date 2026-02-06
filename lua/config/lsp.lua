@@ -95,6 +95,9 @@ local servers = {
   templ = {},
   terraformls = {},
   tflint = {},
+  json = {
+    filetypes = { 'json', 'jsonc' }
+  },
   lua_ls = {
     Lua = {
       workspace = {
