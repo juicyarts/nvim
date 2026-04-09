@@ -90,8 +90,17 @@ return {
         progress = {
           enabled = false,
         },
+        -- Enable noice hover handling to avoid treesitter crash in floating windows
         hover = {
-          enabled = false,
+          enabled = true,
+          opts = {
+            border = {
+              style = "rounded",
+            },
+          },
+        },
+        signature = {
+          enabled = true,
         },
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
