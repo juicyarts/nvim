@@ -13,6 +13,35 @@ return {
   config = function()
     -- [[ Configure Treesitter ]]
     -- See `:help nvim-treesitter`
+
+    -- Fix for markdown injection crash: override directive with safe handler
+    -- Keeps markdown highlighting while skipping broken injection nodes
+    local markdown_aliases = {
+      ex = "elixir",
+      pl = "perl",
+      sh = "bash",
+      uxn = "uxntal",
+      ts = "typescript",
+    }
+
+    local function get_parser_from_markdown_info_string(injection_alias)
+      local match = vim.filetype.match({ filename = "a." .. injection_alias })
+      return match or markdown_aliases[injection_alias] or injection_alias
+    end
+
+    vim.treesitter.query.add_directive("set-lang-from-info-string!", function(match, _, bufnr, pred, metadata)
+      local capture_id = pred[2]
+      local node = match[capture_id]
+      if not node then
+        return
+      end
+      local ok, text = pcall(vim.treesitter.get_node_text, node, bufnr)
+      if not ok or not text then
+        return
+      end
+      metadata["injection.language"] = get_parser_from_markdown_info_string(text:lower())
+    end, { force = true })
+
     -- Defer Treesitter setup after first render to improve startup time of 'nvim {filename}'
     vim.defer_fn(function()
       require('nvim-treesitter.configs').setup {
