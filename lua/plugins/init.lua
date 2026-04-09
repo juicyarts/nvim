@@ -155,5 +155,27 @@ return {
       require("telescope").load_extension("lazygit")
     end,
   },
+  {
+    "stevearc/conform.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("conform").setup({
+        formatters_by_ft = {
+          json = { "jq", "prettierd" },
+          jsonc = { "prettierd" },
+        },
+        settings = {
+          jq = {
+            binary = "jq",
+            args = { "." },
+          },
+          prettierd = {
+            binary = "prettierd",
+            args = { "--stdin-filepath", "{filepath}" },
+          },
+        },
+      })
+    end,
+  },
   { 'akinsho/git-conflict.nvim', version = "*", config = true },
 }

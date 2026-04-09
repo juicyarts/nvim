@@ -20,6 +20,8 @@ return {
       "prettierd",
       -- Lua
       "stylua",
+      -- JSON/JSONC
+      "jq",
       -- Other
       "clangd",
       "clang-format",

@@ -16,12 +16,12 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", {
 })
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, {
-  desc = 'Go to previous diagnostic message'
-})
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, {
-  desc = 'Go to next diagnostic message'
-})
+-- vim.keymap.set('n', '[d', vim.diagnostic.jump(), {
+--   desc = 'Go to previous diagnostic message'
+-- })
+-- vim.keymap.set('n', ']d', vim.diagnostic.goto_next, {
+--   desc = 'Go to next diagnostic message'
+-- })
 
 vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, {
   desc = "[f]ormat"
@@ -107,26 +107,25 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.keymap.set('n', '<leader>gf', '<cmd>GoFillStruct<CR>', opts)
     -- Add struct tags
     vim.keymap.set('n', '<leader>gj', '<cmd>GoAddTags<CR>', opts)
-    -- Remove struct tags  
+    -- Remove struct tags
     vim.keymap.set('n', '<leader>gk', '<cmd>GoRmTags<CR>', opts)
     -- Clear struct tags
     vim.keymap.set('n', '<leader>gc', '<cmd>GoClearTags<CR>', opts)
-    
     -- Go-specific which-key groups
     require('which-key').add {
-      { '<leader>g', group = '[G]o', buffer = true },
-      { '<leader>ga', '[G]o [A]dd Import', buffer = true },
-      { '<leader>gb', '[G]o [B]uild', buffer = true },
-      { '<leader>gc', '[G]o [C]lear Tags', buffer = true },
-      { '<leader>gf', '[G]o [F]ill Struct', buffer = true },
-      { '<leader>gi', '[G]o [I]nstall', buffer = true },
-      { '<leader>gj', '[G]o Add T[a]gs', buffer = true },
-      { '<leader>gk', '[G]o R[m] Tags', buffer = true },
-      { '<leader>gm', '[G]o Go[m]od Init', buffer = true },
-      { '<leader>gp', '[G]o Get Packa[g]e', buffer = true },
-      { '<leader>gr', '[G]o [R]un', buffer = true },
+      { '<leader>g',  group = '[G]o',         buffer = true },
+      { '<leader>ga', '[G]o [A]dd Import',    buffer = true },
+      { '<leader>gb', '[G]o [B]uild',         buffer = true },
+      { '<leader>gc', '[G]o [C]lear Tags',    buffer = true },
+      { '<leader>gf', '[G]o [F]ill Struct',   buffer = true },
+      { '<leader>gi', '[G]o [I]nstall',       buffer = true },
+      { '<leader>gj', '[G]o Add T[a]gs',      buffer = true },
+      { '<leader>gk', '[G]o R[m] Tags',       buffer = true },
+      { '<leader>gm', '[G]o Go[m]od Init',    buffer = true },
+      { '<leader>gp', '[G]o Get Packa[g]e',   buffer = true },
+      { '<leader>gr', '[G]o [R]un',           buffer = true },
       { '<leader>gs', '[G]o Generate [S]tub', buffer = true },
-      { '<leader>gt', '[G]o [T]idy', buffer = true },
+      { '<leader>gt', '[G]o [T]idy',          buffer = true },
     }
   end,
 })

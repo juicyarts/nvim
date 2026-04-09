@@ -40,10 +40,14 @@ vim.opt.expandtab = true
 vim.opt.cmdheight = 0
 vim.opt.updatetime = 50
 
--- FMT on save?
+-- Auto-format JSON/JSONC files on save
 vim.api.nvim_create_autocmd('BufWritePre', {
+  pattern = { '*.json', '*.jsonc' },
   callback = function()
-    vim.lsp.buf.format()
+    local ft = vim.bo.filetype
+    if ft == 'json' or ft == 'jsonc' then
+      vim.cmd('Format')
+    end
   end,
 })
 
